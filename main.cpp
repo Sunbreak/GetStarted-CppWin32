@@ -3,21 +3,23 @@
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
+auto gAppName{ L"GetStarted-CppWin32" };
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 {
-    auto CLASS_NAME{ L"Sample Window Class" };
+    auto className{ L"Sample Window Class" };
 
     WNDCLASS wc = {};
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = CLASS_NAME;
+    wc.lpszClassName = className;
 
     RegisterClass(&wc);
 
     HWND hwnd = CreateWindowEx(
         0,
-        CLASS_NAME,
-        L"GetStarted-CppWin32",
+        className,
+        gAppName,
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
         nullptr,
@@ -58,6 +60,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         HDC hdc = BeginPaint(hwnd, &ps);
         FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW + 1));
         EndPaint(hwnd, &ps);
+        return 0;
+    }
+    case WM_CLOSE:
+    {
+        if (MessageBox(hwnd, L"Really quit?", gAppName, MB_OKCANCEL) == IDOK)
+            DestroyWindow(hwnd);
+        return 0;
+    }
+    case WM_DESTROY:
+    {
+        PostQuitMessage(0);
         return 0;
     }
     default:
