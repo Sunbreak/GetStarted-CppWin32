@@ -1,5 +1,7 @@
-#include "MainWindow.h"
 #include <string>
+
+#include "MainWindow.h"
+#include "resource.h"
 
 LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -20,6 +22,9 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         EndPaint(m_hwnd, &ps);
         return 0;
     }
+    case WM_COMMAND:
+        OnCommand(wParam);
+        return 0;
     case WM_CLOSE:
     {
         if (MessageBox(m_hwnd, L"Really quit?", m_lpWindowsName, MB_OKCANCEL) == IDOK)
@@ -35,4 +40,19 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         break;
     }
     return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
+}
+
+void MainWindow::OnCommand(WPARAM wParam)
+{
+    switch (LOWORD(wParam))
+    {
+    case ID_START_SCAN:
+        OutputDebugString(L"OnCommand ID_START_SCAN\n");
+        break;
+    case ID_STOP_SCAN:
+        OutputDebugString(L"OnCommand ID_STOP_SCAN\n");
+        break;
+    default:
+        break;
+    }
 }
