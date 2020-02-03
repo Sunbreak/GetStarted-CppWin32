@@ -1,7 +1,6 @@
-#include <string>
+#include "pch.h"
 
 #include "MainWindow.h"
-#include "resource.h"
 
 LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {

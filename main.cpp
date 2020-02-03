@@ -1,8 +1,6 @@
-#include <string>
-#include <Windows.h>
+#include "pch.h"
 
 #include "MainWindow.h"
-#include "resource.h"
 
 auto g_lpAppName{ L"GetStarted-CppWin32" };
 
