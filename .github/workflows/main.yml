@@ -7,5 +7,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: warrenbuckley/Setup-Nuget@v1
+      - run: nuget restore
       - uses: warrenbuckley/Setup-MSBuild@v1
       - run: msbuild -t:Build -p:Configuration=Release
