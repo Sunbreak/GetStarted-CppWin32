@@ -2,6 +2,8 @@
 
 #include "MainWindow.h"
 
+using namespace std;
+
 LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -47,11 +49,25 @@ void MainWindow::OnCommand(WPARAM wParam)
     {
     case ID_START_SCAN:
         OutputDebugString(L"OnCommand ID_START_SCAN\n");
+        bluetoothLEWatcher = BluetoothLEAdvertisementWatcher();
+        bluetoothLEWatcherReceivedToken = bluetoothLEWatcher.Received({ this, &MainWindow::BluetoothLEWatcher_Received });
+        bluetoothLEWatcher.Start();
         break;
     case ID_STOP_SCAN:
         OutputDebugString(L"OnCommand ID_STOP_SCAN\n");
+        if (bluetoothLEWatcher)
+        {
+            bluetoothLEWatcher.Stop();
+            bluetoothLEWatcher.Received(bluetoothLEWatcherReceivedToken);
+        }
+        bluetoothLEWatcher = nullptr;
         break;
     default:
         break;
     }
+}
+
+void MainWindow::BluetoothLEWatcher_Received(BluetoothLEAdvertisementWatcher sender, BluetoothLEAdvertisementReceivedEventArgs args)
+{
+    OutputDebugString((L"Received " + to_wstring(args.BluetoothAddress()) + L"\n").c_str());
 }
